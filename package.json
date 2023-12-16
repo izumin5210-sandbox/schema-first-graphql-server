@@ -12,7 +12,8 @@
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/graphql-modules-preset": "^4.0.1",
     "@graphql-codegen/typescript": "^4.0.1",
-    "@graphql-codegen/typescript-resolvers": "^4.0.1"
+    "@graphql-codegen/typescript-resolvers": "^4.0.1",
+    "prettier": "^3.1.1"
   },
   "dependencies": {
     "graphql": "^16.8.1",
