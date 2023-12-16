@@ -1,0 +1,10 @@
+type Query {
+  book(id: ID!): Book
+}
+type Mutation {
+  markBookAsRead(id: ID!): Book!
+}
+type Book {
+  id: ID!
+  isbn: String!
+}
