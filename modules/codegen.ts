@@ -1,24 +1,27 @@
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: './src/schema/**/*.graphql',
+  schema: "./src/schema/**/*.graphql",
   generates: {
-    './src/schema/': {
-      preset: 'graphql-modules',
+    "./src/schema/": {
+      preset: "graphql-modules",
       presetConfig: {
-        baseTypesPath: '../generated-types/graphql.ts',
-        filename: 'generated-types/module-types.ts'
+        baseTypesPath: "../generated-types/graphql.ts",
+        filename: "generated-types/module-types.ts",
       },
       plugins: [
         {
           add: {
-            content: '/* eslint-disable */'
-          }
+            content: "/* eslint-disable */",
+          },
         },
-        'typescript',
-        'typescript-resolvers'
-      ]
-    }
-  }
-}
-export default config
+        "typescript",
+        "typescript-resolvers",
+      ],
+    },
+  },
+  hooks: {
+    afterAllFileWrite: ["prettier --write"],
+  },
+};
+export default config;
