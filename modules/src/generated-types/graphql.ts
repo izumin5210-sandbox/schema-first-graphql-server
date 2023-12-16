@@ -32,29 +32,44 @@ export type Scalars = {
   Float: { input: number; output: number };
 };
 
-export type Book = {
-  __typename?: "Book";
+export type Image = {
+  __typename?: "Image";
   id: Scalars["ID"]["output"];
-  isbn: Scalars["String"]["output"];
+  url: Scalars["String"]["output"];
+  user: User;
 };
 
 export type Mutation = {
   __typename?: "Mutation";
-  markBookAsRead: Book;
+  login?: Maybe<User>;
+  signup?: Maybe<User>;
+  uploadPicture?: Maybe<Image>;
 };
 
-export type MutationMarkBookAsReadArgs = {
-  id: Scalars["ID"]["input"];
+export type MutationLoginArgs = {
+  password: Scalars["String"]["input"];
+  username: Scalars["String"]["input"];
+};
+
+export type MutationSignupArgs = {
+  password: Scalars["String"]["input"];
+  username: Scalars["String"]["input"];
+};
+
+export type MutationUploadPictureArgs = {
+  imageUrl: Scalars["String"]["input"];
+};
+
+export type Profile = {
+  __typename?: "Profile";
+  age: Scalars["Int"]["output"];
+  name: Scalars["String"]["output"];
 };
 
 export type Query = {
   __typename?: "Query";
-  book?: Maybe<Book>;
+  me?: Maybe<User>;
   user?: Maybe<User>;
-};
-
-export type QueryBookArgs = {
-  id: Scalars["ID"]["input"];
 };
 
 export type QueryUserArgs = {
@@ -63,9 +78,11 @@ export type QueryUserArgs = {
 
 export type User = {
   __typename?: "User";
-  fullName: Scalars["String"]["output"];
+  email: Scalars["String"]["output"];
+  gallery?: Maybe<Array<Maybe<Image>>>;
   id: Scalars["ID"]["output"];
-  isAdmin: Scalars["Boolean"]["output"];
+  profile: Profile;
+  username: Scalars["String"]["output"];
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -175,10 +192,12 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Book: ResolverTypeWrapper<Book>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
   ID: ResolverTypeWrapper<Scalars["ID"]["output"]>;
+  Image: ResolverTypeWrapper<Image>;
+  Int: ResolverTypeWrapper<Scalars["Int"]["output"]>;
   Mutation: ResolverTypeWrapper<{}>;
+  Profile: ResolverTypeWrapper<Profile>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars["String"]["output"]>;
   User: ResolverTypeWrapper<User>;
@@ -186,22 +205,25 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Book: Book;
   Boolean: Scalars["Boolean"]["output"];
   ID: Scalars["ID"]["output"];
+  Image: Image;
+  Int: Scalars["Int"]["output"];
   Mutation: {};
+  Profile: Profile;
   Query: {};
   String: Scalars["String"]["output"];
   User: User;
 };
 
-export type BookResolvers<
+export type ImageResolvers<
   ContextType = any,
   ParentType extends
-    ResolversParentTypes["Book"] = ResolversParentTypes["Book"],
+    ResolversParentTypes["Image"] = ResolversParentTypes["Image"],
 > = {
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
-  isbn?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  url?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -210,12 +232,34 @@ export type MutationResolvers<
   ParentType extends
     ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"],
 > = {
-  markBookAsRead?: Resolver<
-    ResolversTypes["Book"],
+  login?: Resolver<
+    Maybe<ResolversTypes["User"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationMarkBookAsReadArgs, "id">
+    RequireFields<MutationLoginArgs, "password" | "username">
   >;
+  signup?: Resolver<
+    Maybe<ResolversTypes["User"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignupArgs, "password" | "username">
+  >;
+  uploadPicture?: Resolver<
+    Maybe<ResolversTypes["Image"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUploadPictureArgs, "imageUrl">
+  >;
+};
+
+export type ProfileResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes["Profile"] = ResolversParentTypes["Profile"],
+> = {
+  age?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<
@@ -223,12 +267,7 @@ export type QueryResolvers<
   ParentType extends
     ResolversParentTypes["Query"] = ResolversParentTypes["Query"],
 > = {
-  book?: Resolver<
-    Maybe<ResolversTypes["Book"]>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryBookArgs, "id">
-  >;
+  me?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
   user?: Resolver<
     Maybe<ResolversTypes["User"]>,
     ParentType,
@@ -242,15 +281,22 @@ export type UserResolvers<
   ParentType extends
     ResolversParentTypes["User"] = ResolversParentTypes["User"],
 > = {
-  fullName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  gallery?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Image"]>>>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
-  isAdmin?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  profile?: Resolver<ResolversTypes["Profile"], ParentType, ContextType>;
+  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
-  Book?: BookResolvers<ContextType>;
+  Image?: ImageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Profile?: ProfileResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };

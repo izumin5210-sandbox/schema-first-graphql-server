@@ -1,0 +1,8 @@
+type Profile {
+  age: Int!
+  name: String!
+}
+
+extend type User {
+  profile: Profile!
+}

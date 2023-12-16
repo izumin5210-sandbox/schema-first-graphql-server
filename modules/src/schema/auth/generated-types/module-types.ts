@@ -1,15 +1,15 @@
 /* eslint-disable */
 import * as Types from "../../../generated-types/graphql";
 import * as gm from "graphql-modules";
-export namespace BookModule {
+export namespace AuthModule {
   interface DefinedFields {
-    Query: "book";
-    Mutation: "markBookAsRead";
-    Book: "id" | "isbn";
+    Query: "me";
+    Mutation: "login" | "signup";
+    User: "username";
   }
 
   export type Query = Pick<Types.Query, DefinedFields["Query"]>;
-  export type Book = Pick<Types.Book, DefinedFields["Book"]>;
+  export type User = Types.User;
   export type Mutation = Pick<Types.Mutation, DefinedFields["Mutation"]>;
 
   export type QueryResolvers = Pick<
@@ -20,15 +20,12 @@ export namespace BookModule {
     Types.MutationResolvers,
     DefinedFields["Mutation"]
   >;
-  export type BookResolvers = Pick<
-    Types.BookResolvers,
-    DefinedFields["Book"] | "__isTypeOf"
-  >;
+  export type UserResolvers = Pick<Types.UserResolvers, DefinedFields["User"]>;
 
   export interface Resolvers {
     Query?: QueryResolvers;
     Mutation?: MutationResolvers;
-    Book?: BookResolvers;
+    User?: UserResolvers;
   }
 
   export interface MiddlewareMap {
@@ -37,16 +34,16 @@ export namespace BookModule {
     };
     Query?: {
       "*"?: gm.Middleware[];
-      book?: gm.Middleware[];
+      me?: gm.Middleware[];
     };
     Mutation?: {
       "*"?: gm.Middleware[];
-      markBookAsRead?: gm.Middleware[];
+      login?: gm.Middleware[];
+      signup?: gm.Middleware[];
     };
-    Book?: {
+    User?: {
       "*"?: gm.Middleware[];
-      id?: gm.Middleware[];
-      isbn?: gm.Middleware[];
+      username?: gm.Middleware[];
     };
   }
 }

@@ -1,0 +1,13 @@
+type Image {
+  id: ID!
+  url: String!
+  user: User!
+}
+
+extend type User {
+  gallery: [Image]
+}
+
+extend type Mutation {
+  uploadPicture(imageUrl: String!): Image
+}

@@ -1,0 +1,12 @@
+extend type Query {
+  me: User
+}
+
+type Mutation {
+  login(username: String!, password: String!): User
+  signup(username: String!, password: String!): User
+}
+
+extend type User {
+  username: String!
+}
