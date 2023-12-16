@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from "graphql";
+import { UserMapper } from "./user/schema.mappers";
 export type Maybe<T> = T | null | undefined;
 export type InputMaybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -19,6 +20,7 @@ export type Incremental<T> =
   | {
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
   [P in K]-?: NonNullable<T[P]>;
 };
@@ -191,27 +193,29 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Image: ResolverTypeWrapper<Image>;
+  Image: ResolverTypeWrapper<
+    Omit<Image, "user"> & { user: ResolversTypes["User"] }
+  >;
   ID: ResolverTypeWrapper<Scalars["ID"]["output"]>;
   String: ResolverTypeWrapper<Scalars["String"]["output"]>;
   Mutation: ResolverTypeWrapper<{}>;
   Profile: ResolverTypeWrapper<Profile>;
   Int: ResolverTypeWrapper<Scalars["Int"]["output"]>;
   Query: ResolverTypeWrapper<{}>;
-  User: ResolverTypeWrapper<User>;
+  User: ResolverTypeWrapper<UserMapper>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Image: Image;
+  Image: Omit<Image, "user"> & { user: ResolversParentTypes["User"] };
   ID: Scalars["ID"]["output"];
   String: Scalars["String"]["output"];
   Mutation: {};
   Profile: Profile;
   Int: Scalars["Int"]["output"];
   Query: {};
-  User: User;
+  User: UserMapper;
   Boolean: Scalars["Boolean"]["output"];
 };
 
