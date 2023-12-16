@@ -2,6 +2,9 @@
   "name": "@izumin5210-sandbox/schema-first-graphql-server",
   "private": true,
   "packageManager": "pnpm@8.12.1",
+  "scripts": {
+    "gen:resolvers": "cd resolvers && graphql-codegen"
+  },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/typescript": "^4.0.1",
